@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import '../styles/LoginPage.css';
+import { useAuth } from '../context/AuthContext';
+import { useNotify } from '../context/NotificationContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = ({ onLogin }) => {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const {login} = useAuth()
+  const {error} = useNotify()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,16 +34,16 @@ const LoginPage = ({ onLogin }) => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+    if (!formData.username) {
+      newErrors.username = 'Username is required';
+    }  else if (formData.username.length < 5) {
+    newErrors.password = 'Username must be at least 5 characters';
     }
     
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else if (formData.password.length < 5) {
+      newErrors.password = 'Password must be at least 5 characters';
     }
     
     return newErrors;
@@ -56,23 +62,24 @@ const LoginPage = ({ onLogin }) => {
     setErrors({});
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Call the onLogin prop with user data
-      if (onLogin) {
-        onLogin({
-          email: formData.email,
-          name: 'John Doe' // This would come from your API
-        });
+        const result = await login(formData.username, formData.password);
+        
+        if (result.success) {
+        //   if (result.requires2FA) {
+        //     setShow2FAModal(true);
+        //   } else {
+        //     // Login successful without 2FA, redirect to dashboard
+        //     navigate('/');
+        //   }
+            navigate('/')
+        } else {
+          error(result.error || 'Login failed');
+        }
+      } catch (err) {
+        error('An unexpected error occurred during login');
+      } finally {
+        setIsLoading(false);
       }
-      
-      console.log('Login successful:', formData);
-    } catch (error) {
-      setErrors({ general: 'Login failed. Please try again.' });
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const togglePasswordVisibility = () => {
@@ -95,19 +102,19 @@ const LoginPage = ({ onLogin }) => {
           )}
 
           <div className="form-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="username">Username</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="username"
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
-              className={errors.email ? 'error' : ''}
-              placeholder="Enter your email"
+              className={errors.username ? 'error' : ''}
+              placeholder="Enter your username"
               disabled={isLoading}
             />
-            {errors.email && (
-              <span className="error-message">{errors.email}</span>
+            {errors.username && (
+              <span className="error-message">{errors.username}</span>
             )}
           </div>
 
