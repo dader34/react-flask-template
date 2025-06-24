@@ -32,15 +32,6 @@ cd react-flask-template
 # Navigate to backend directory
 cd backend
 
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
 # Install dependencies
 pip install -r requirements.txt
 
@@ -99,50 +90,24 @@ cd ../backend
 python app.py
 ```
 
-## 📁 Project Structure
-
-```
-react-flask-template/
-├── backend/
-│   ├── app.py                 # Flask application entry point
-│   ├── config.py              # Configuration settings
-│   ├── models/                # SQLAlchemy models
-│   │   ├── __init__.py
-│   │   └── user.py
-│   ├── routes/                # API routes
-│   │   ├── __init__.py
-│   │   └── api.py
-│   ├── requirements.txt       # Python dependencies
-│   ├── .env.example          # Environment variables template
-│   └── migrations/           # Database migrations
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/       # React components
-│   │   ├── services/         # API service functions
-│   │   ├── App.js           # Main React component
-│   │   └── index.js         # React entry point
-│   ├── package.json         # Node.js dependencies
-│   └── build/              # Production build (generated)
-└── README.md
-```
 
 ## 🔧 Configuration
 
 ### Backend Configuration
-Edit `backend/.env` with your settings:
+Edit `server/.env` with your settings:
 ```env
 FLASK_ENV=development
 DATABASE_URL=sqlite:///app.db
 SECRET_KEY=your-secret-key-here
+RESEND_API_KEY=XXXXXXX
+TEST_DB_URL=xxxxx
 ```
 
 ### Frontend Configuration
-API endpoints are configured in `frontend/src/services/api.js`
 
 ## 🗄️ Database Models
 
-The template includes a basic User model. Extend or modify models in `backend/models/`:
+The template includes a basic User model. Extend or modify models in `server/models/`:
 
 ```python
 from app import db
@@ -156,48 +121,18 @@ class User(db.Model):
 ## 🛣️ API Routes
 
 Default API routes are available at:
-- `GET /api/users` - Get all users
-- `POST /api/users` - Create a new user
-- `GET /api/users/<id>` - Get user by ID
-- `PUT /api/users/<id>` - Update user
-- `DELETE /api/users/<id>` - Delete user
+- `GET /users` - Get all users
+- `POST /users` - Create a new user
+- `GET /users/<id>` - Get user by ID
+- `PATCH /users/<id>` - Update user
+- `DELETE /users/<id>` - Delete user
 
-## 🚀 Deployment
 
-### Heroku Deployment
-1. Create a Heroku app
-2. Set environment variables in Heroku dashboard
-3. Deploy using Git:
-```bash
-git add .
-git commit -m "Deploy to Heroku"
-git push heroku main
-```
-
-### Docker Deployment
-```bash
-# Build and run with Docker Compose
-docker-compose up --build
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
-
-If you encounter any issues or have questions:
-- Open an issue on GitHub
-- Check the documentation
-- Review existing issues for solutions
 
 ## 🙏 Acknowledgments
 
@@ -206,5 +141,3 @@ If you encounter any issues or have questions:
 - SQLAlchemy team for the excellent ORM
 
 ---
-
-**Happy coding!** 🎉
