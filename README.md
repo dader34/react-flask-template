@@ -66,8 +66,8 @@ flask db upgrade
 #### Start the Backend Server
 ```bash
 cd backend
-python app.py
-# Backend will run on http://localhost:5000
+python3 main.py
+# Backend will run on http://localhost:5252
 ```
 
 #### Start the Frontend Server
